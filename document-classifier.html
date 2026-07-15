@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Docs — Document Classification System | Shahanas M A</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #faf7f2;
+    --bg2: #f3ede4;
+    --bg3: #ede5d8;
+    --accent: #b45309;
+    --accent2: #92400e;
+    --text: #1c1410;
+    --text2: #5c4a35;
+    --text3: #9c836a;
+    --border: rgba(180,83,9,0.12);
+    --card: rgba(180,83,9,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(250,247,242,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 6%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    color: var(--accent);
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    color: var(--text2);
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 6% 60px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #faf7f2 0%, #f3ede4 100%);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+  radial-gradient(ellipse 50% 50% at 80% 50%, rgba(180,83,9,0.06) 0%, transparent 70%),
+  radial-gradient(ellipse 30% 40% at 10% 60%, rgba(146,64,14,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+  .project-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.25);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text2);
+    margin-bottom: 24px;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 680px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .meta-val {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* SECTIONS */
+  section { padding: 80px 6%; }
+
+  .section-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 40px;
+    color: var(--text);
+  }
+
+  /* OVERVIEW */
+  .overview { background: var(--bg2); }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .overview-text {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.9;
+  }
+
+  .overview-text p { margin-bottom: 16px; }
+  .overview-text strong { color: var(--text); }
+
+  .info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .info-card {
+    padding: 14px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .info-card-icon { font-size: 18px; flex-shrink: 0; }
+
+  .info-card-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+
+  .info-card-val {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  /* SCREENSHOTS */
+  .screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .screenshot-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .screenshot-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(245,158,11,0.3);
+  }
+
+  .screenshot-img {
+    width: 100%;
+    background: var(--bg3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .screenshot-img img {
+    width: 100%;
+    display: block;
+  }
+
+  .screenshot-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text3);
+    font-size: 12px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .screenshot-placeholder span {
+    font-size: 28px;
+  }
+
+  .screenshot-info {
+    padding: 14px 16px;
+  }
+
+  .screenshot-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .screenshot-desc {
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+
+  /* FEATURES */
+  .features { background: var(--bg2); }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+  }
+
+  .feature-card {
+    padding: 22px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: border-color 0.2s;
+  }
+
+  .feature-card:hover { border-color: rgba(245,158,11,0.3); }
+
+  .feature-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .feature-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* TECH STACK */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .tech-card {
+    padding: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .tech-category {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .tech-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.15);
+    color: var(--text2);
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* ARCHITECTURE */
+  .arch { background: var(--bg2); }
+
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .arch-step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 120px;
+  }
+
+  .arch-step-icon { font-size: 22px; margin-bottom: 6px; }
+  .arch-step-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .arch-step-detail {
+    font-size: 10px;
+    color: var(--text3);
+    font-family: 'Fira Code', monospace;
+  }
+
+  .arch-arrow {
+    color: var(--accent);
+    font-size: 18px;
+    padding: 0 8px;
+    font-weight: 300;
+  }
+
+  /* TESTING RESULTS */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+  }
+
+  .result-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(245,158,11,0.08);
+    font-size: 12px;
+  }
+
+  .result-item:last-child { border-bottom: none; }
+
+  .result-name { color: var(--text2); }
+
+  .result-pass {
+    color: #166534;
+    font-weight: 600;
+    font-size: 11px;
+    background: rgba(22,101,52,0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  /* FOOTER NAV */
+  .page-footer {
+    padding: 40px 6%;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--text2);
+    transition: color 0.2s;
+  }
+  .footer-back:hover { color: var(--accent); }
+
+  .next-project {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--text2);
+    transition: color 0.2s;
+  }
+  .next-project:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .overview-grid { grid-template-columns: 1fr; }
+    .screenshots-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: 1fr; }
+    .arch-flow { flex-direction: column; }
+    .arch-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">shahanas.dev / projects</div>
+  <a href="portfolio.html" class="back-btn">← Back </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="project-tag">📄 MCA Main Project · 2026</div>
+    <h1>AI Docs — <span>Intelligent Document</span><br>Classification System</h1>
+    <div class="hero-sub">Using Machine Learning · NLP · SVM · Flask</div>
+    <p class="hero-desc">
+      A web-based AI system that automatically categorizes digital documents into predefined categories using Natural Language Processing and Machine Learning techniques. Reduces manual effort, improves accuracy, and includes an admin review mechanism with real-time notifications.
+    </p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="meta-label">University</div>
+        <div class="meta-val">APJ Abdul Kalam Technological University</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Degree</div>
+        <div class="meta-val">Master of Computer Applications</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Year</div>
+        <div class="meta-val">March 2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Role</div>
+        <div class="meta-val">Solo Developer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="overview" id="overview">
+  <div class="section-label">// project overview</div>
+  <div class="section-title">What & Why</div>
+  <div class="overview-grid">
+    <div class="overview-text">
+      <p>With the rapid growth of digital information, managing and organizing large volumes of documents has become a significant challenge. <strong>Manual document classification is time-consuming, error-prone, and inefficient</strong> for large-scale repositories.</p>
+      <p>This system proposes an <strong>Intelligent Document Classification System</strong> that automatically categorizes documents based on their textual content using ML techniques.</p>
+      <p>The system applies <strong>NLP preprocessing</strong> (tokenization, stop-word removal, text normalization) followed by <strong>TF-IDF feature extraction</strong> and <strong>SVM classification</strong> to predict document categories with high accuracy.</p>
+      <p>Beyond classification, the system includes an <strong>admin review mechanism</strong>, notification system, and user authentication for a complete, production-ready document management platform.</p>
+    </div>
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-card-icon">🎯</div>
+        <div>
+          <div class="info-card-label">Problem Solved</div>
+          <div class="info-card-val">Automated classification of digital documents into HR, Finance, Legal, and Administration categories</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⚙️</div>
+        <div>
+          <div class="info-card-label">ML Algorithm</div>
+          <div class="info-card-val">Support Vector Machine (SVM) with TF-IDF feature extraction</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📁</div>
+        <div>
+          <div class="info-card-label">Supported Formats</div>
+          <div class="info-card-val">PDF, TXT, PPTX, DOCX</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⚡</div>
+        <div>
+          <div class="info-card-label">Processing Speed</div>
+          <div class="info-card-val">Real-time classification within 1–2 seconds</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🔒</div>
+        <div>
+          <div class="info-card-label">Security</div>
+          <div class="info-card-val">User authentication, admin approval, role-based access control</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOTS -->
+<section id="screenshots">
+  <div class="section-label">// screenshots</div>
+  <div class="section-title">Project Screenshots</div>
+  <div class="screenshots-grid">
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/login.png" alt="Login Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>🔐</span>
+          Add login.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Login Page</div>
+        <div class="screenshot-desc">Secure user authentication with username and password</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/register.png" alt="Registration Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>📝</span>
+          Add register.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">User Registration Page</div>
+        <div class="screenshot-desc">New user registration with department selection and admin approval</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/upload.png" alt="Upload Document Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>📤</span>
+          Add upload.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Upload Document Page</div>
+        <div class="screenshot-desc">Users upload a PDF, TXT, PPTX, or DOCX file and instantly see the predicted category alongside a confidence score, so they know at a glance how certain the model is before the document is filed away.</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/categories.png" alt="Document Categories"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>📂</span>
+          Add categories.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Document Categories</div>
+        <div class="screenshot-desc">HR, Finance, Legal, and Administration category folders</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/notification.png" alt="Notification Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>🔔</span>
+          Add notification.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Notification Page</div>
+        <div class="screenshot-desc">Admin notifications for pending document reviews</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/admin.png" alt="Admin Review Panel"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>⚙️</span>
+          Add admin.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Admin Review Panel</div>
+        <div class="screenshot-desc">Review and correct low-confidence document classifications</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/userapproval.png" alt="User Approval Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>✅</span>
+          Add userapproval.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">User Approval Page</div>
+        <div class="screenshot-desc">Admin approval and rejection of newly registered users</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/documents.png" alt="Uploaded Documents Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>📋</span>
+          Add documents.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Uploaded Documents Page</div>
+        <div class="screenshot-desc">View, open, and download classified documents with confidence scores</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/profile.png" alt="User Profile Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>👤</span>
+          Add profile.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">User Profile Page</div>
+        <div class="screenshot-desc">User profile with name, email, username, department, and role</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-label">// key features</div>
+  <div class="section-title">What It Does</div>
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Automated Classification</div>
+      <div class="feature-desc">Automatically categorizes documents into HR, Finance, Legal, and Administration using SVM machine learning model.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">NLP Text Processing</div>
+      <div class="feature-desc">Tokenization, stop-word removal, text normalization, and TF-IDF feature extraction for accurate text analysis.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Confidence Score</div>
+      <div class="feature-desc">Each classification result includes a confidence score to indicate prediction reliability.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Notification System</div>
+      <div class="feature-desc">Real-time admin notifications for pending document reviews and low-confidence predictions.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Admin Review Panel</div>
+      <div class="feature-desc">Administrators can review, approve, or correct document classifications flagged for review.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">User Authentication</div>
+      <div class="feature-desc">Secure login, registration, and admin approval system with role-based access control.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Multi-format Support</div>
+      <div class="feature-desc">Supports PDF, TXT, and PPTX document uploads with automatic text extraction.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Correction Requests</div>
+      <div class="feature-desc">Users can submit correction requests for misclassified documents, which are reviewed by admins.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Real-time Processing</div>
+      <div class="feature-desc">Documents are classified within 1–2 seconds, providing near real-time results to users.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="tech">
+  <div class="section-label">// technology stack</div>
+  <div class="section-title">Built With</div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-category"> Backend</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Python 3.9+</span>
+        <span class="tech-tag">Flask</span>
+        <span class="tech-tag">Joblib</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Machine Learning</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Scikit-learn</span>
+        <span class="tech-tag">SVM</span>
+        <span class="tech-tag">TF-IDF</span>
+        <span class="tech-tag">Pandas</span>
+        <span class="tech-tag">NumPy</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category">NLP</div>
+      <div class="tech-tags">
+        <span class="tech-tag">NLTK</span>
+        <span class="tech-tag">Tokenization</span>
+        <span class="tech-tag">Stop-word Removal</span>
+        <span class="tech-tag">Text Normalization</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Frontend</div>
+      <div class="tech-tags">
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Database</div>
+      <div class="tech-tags">
+        <span class="tech-tag">SQLite</span>
+        <span class="tech-tag">MySQL</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Document Processing</div>
+      <div class="tech-tags">
+        <span class="tech-tag">PyPDF2</span>
+        <span class="tech-tag">python-pptx</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="arch" id="architecture">
+  <div class="section-label">// system architecture</div>
+  <div class="section-title">How It Works</div>
+
+  <div class="arch-flow">
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">User Upload</div>
+      <div class="arch-step-detail">PDF / TXT / PPTX</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Text Extraction</div>
+      <div class="arch-step-detail">PyPDF2 / PPTX</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">NLP Preprocessing</div>
+      <div class="arch-step-detail">NLTK · Tokenize</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">TF-IDF</div>
+      <div class="arch-step-detail">Feature Vectors</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">SVM Model</div>
+      <div class="arch-step-detail">Classification</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Result</div>
+      <div class="arch-step-detail">Category + Score</div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;text-align:center;font-size:13px;color:var(--text3);">
+    Low confidence results → 🔔 Admin Notification → 👨‍💼 Admin Review → ✏️ Category Update
+  </div>
+</section>
+
+<!-- TESTING RESULTS -->
+<section id="results">
+  <div class="section-label">// testing & results</div>
+  <div class="section-title">All Tests Passed </div>
+  <div class="results-grid">
+
+    <div class="result-card">
+      <div class="result-title">Unit Testing</div>
+      <div class="result-item"><span class="result-name">Text Preprocessing</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">TF-IDF Extraction</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">SVM Classification</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Document Upload</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Database Storage</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">File Extraction</span><span class="result-pass">PASS</span></div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-title">Integration Testing</div>
+      <div class="result-item"><span class="result-name">Input → Preprocessing</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Preprocessing → Model</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Model → Output</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Upload → Database</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Notification System</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Review → Admin Panel</span><span class="result-pass">PASS</span></div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-title">Performance Testing</div>
+      <div class="result-item"><span class="result-name">Real-time Classification</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Preprocessing Speed</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Model Prediction Time</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">UI Responsiveness</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Accuracy Under Load</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Database Response</span><span class="result-pass">PASS</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="page-footer">
+  <a href="portfolio.html" class="footer-back">← Back</a>
+  <a href="sleepshield.html" class="next-project">Next Project: SleepShield →</a>
+</div>
+
+</body>
+</html>

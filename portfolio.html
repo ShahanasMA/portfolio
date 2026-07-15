@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shahanas M A — AI/ML Engineer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #faf7f2;
+    --bg2: #f3ede4;
+    --bg3: #ede5d8;
+    --accent: #b45309;
+    --accent2: #92400e;
+    --text: #1c1410;
+    --text2: #5c4a35;
+    --text3: #9c836a;
+    --border: rgba(180,83,9,0.12);
+    --card: rgba(180,83,9,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(8,15,30,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 6%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Fira Code', monospace;
+    font-size: 15px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    font-size: 13px;
+    color: var(--text2);
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 6% 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+     radial-gradient(ellipse 60% 50% at 70% 40%, rgba(180,83,9,0.06) 0%, transparent 70%),
+radial-gradient(ellipse 40% 40% at 20% 70%, rgba(146,64,14,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(56,182,255,0.1);
+    border: 1px solid rgba(56,182,255,0.25);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-role {
+    font-family: 'Fira Code', monospace;
+    font-size: 16px;
+    color: var(--text2);
+    margin-bottom: 24px;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-role span {
+    color: var(--accent2);
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    color: var(--text2);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 36px;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #faf7f2;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 52px;
+    padding-top: 36px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .stat-item { text-align: left; }
+  .stat-num {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-lbl {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 90px 6%;
+  }
+
+  .section-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 48px;
+    color: var(--text);
+  }
+
+  /* ABOUT */
+  .about {
+    background: var(--bg2);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .about-text {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.9;
+  }
+
+  .about-text p { margin-bottom: 16px; }
+
+  .about-text strong { color: var(--text); }
+
+  .info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .info-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .info-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .info-label {
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+
+  .info-val {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+
+  .skill-card:hover { border-color: rgba(56,182,255,0.3); }
+
+  .skill-card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .skill-tag {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    background: rgba(56,182,255,0.08);
+    border: 1px solid rgba(56,182,255,0.15);
+    color: var(--text2);
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* PROJECTS */
+  .projects { background: var(--bg2); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .project-card:hover { border-color: rgba(56,182,255,0.3); transform: translateY(-3px); }
+  .project-card:hover::before { opacity: 1; }
+
+  .project-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .project-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .project-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .project-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 5px;
+    background: rgba(180,83,9,0.07);
+border: 1px solid rgba(180,83,9,0.15);
+color: #92400e;
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* EDUCATION */
+  .edu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 720px;
+  }
+
+  .edu-card {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: border-color 0.2s;
+  }
+
+  .edu-card:hover { border-color: rgba(56,182,255,0.3); }
+
+  .edu-year {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    min-width: 90px;
+    padding-top: 2px;
+  }
+
+  .edu-body { flex: 1; }
+
+  .edu-degree {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .edu-school {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 6px;
+  }
+
+  .edu-grade {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* CERTIFICATIONS */
+  .cert-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .cert-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    min-width: 280px;
+    transition: border-color 0.2s;
+  }
+
+  .cert-card:hover { border-color: rgba(56,182,255,0.3); }
+
+  .cert-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(56,182,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .cert-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .cert-provider {
+    font-size: 12px;
+    color: var(--text3);
+  }
+
+  /* CONTACT */
+  .contact { background: var(--bg2); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .contact-text {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+
+  .contact-link:hover { border-color: rgba(56,182,255,0.35); }
+
+  .contact-link-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .cl-li { background: #0a66c2; }
+  .cl-gh { background: #24292e; }
+  .cl-em { background: #d44638; }
+  .cl-ph { background: #25d366; }
+
+  .contact-link-label {
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+
+  .contact-link-val {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .contact-right {
+    padding: 32px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+
+  .contact-right h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .contact-right p {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .availability {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    background: rgba(29,185,84,0.08);
+    border: 1px solid rgba(29,185,84,0.2);
+    border-radius: 10px;
+    font-size: 13px;
+    color: #1db954;
+    font-weight: 500;
+  }
+
+  .avail-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #1db954;
+    animation: blink 1.5s infinite;
+    flex-shrink: 0;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 28px 6%;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  footer p {
+    font-size: 13px;
+    color: var(--text3);
+    font-family: 'Fira Code', monospace;
+  }
+
+  footer span { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .about-grid, .contact-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 24px; }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">shahanas.dev</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Open to Work</div>
+    <h1>Shahanas<br><span>M A</span></h1>
+    <div class="hero-role"><span>AI/ML Engineer</span> · Python Developer · MCA 2026</div>
+    <p class="hero-desc">
+      Motivated MCA student passionate about building intelligent, real-world solutions using Machine Learning, NLP, and Python-based web development. Based in Kerala, India.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">88.8%</div>
+        <div class="stat-lbl">MCA CGPA</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-lbl">AI Projects</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">10+</div>
+        <div class="stat-lbl">Tech Skills</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2026</div>
+        <div class="stat-lbl">Graduating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-label">// about me</div>
+  <div class="section-title">Who I Am</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I am a final-year <strong>Master of Computer Applications (MCA)</strong> student at APJ Abdul Kalam Technological University, Kerala, graduating in 2026 with an 88.8% academic record.</p>
+      <p>My passion lies at the intersection of <strong>Artificial Intelligence, Machine Learning, and full-stack web development</strong>. I love turning real-world problems into intelligent software solutions — from NLP-based document classifiers to predictive ML web applications.</p>
+      <p>I am an active <strong>NSS Volunteer</strong>, have presented technical <strong>seminars on IoT</strong>, and participated in <strong>national-level AI conferences</strong>, reflecting my commitment to both technical growth and community service.</p>
+    </div>
+    <div class="info-list">
+      <div class="info-item">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">Location</div>
+          <div class="info-val">Kannur, Kerala, India</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🎓</div>
+        <div>
+          <div class="info-label">Degree</div>
+          <div class="info-val">Master of Computer Applications</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🏫</div>
+        <div>
+          <div class="info-label">University</div>
+          <div class="info-val">APJ Abdul Kalam Technological University</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">💼</div>
+        <div>
+          <div class="info-label">Looking For</div>
+          <div class="info-val">AI/ML Engineer · Python Developer · Software Engineer</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🌐</div>
+        <div>
+          <div class="info-label">Languages</div>
+          <div class="info-val">English (Fluent) · Malayalam (Native)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">// technical skills</div>
+  <div class="section-title">What I Work With</div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-card-title">AI / Machine Learning</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Machine Learning</span>
+        <span class="skill-tag">NLP</span>
+        <span class="skill-tag">SVM</span>
+        <span class="skill-tag">Random Forest</span>
+        <span class="skill-tag">Naive Bayes</span>
+        <span class="skill-tag">KNN</span>
+        <span class="skill-tag">Decision Tree</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-title">Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">Java</span>
+        <span class="skill-tag">C</span>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">Dart</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-title">Libraries & Frameworks</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Scikit-learn</span>
+        <span class="skill-tag">Pandas</span>
+        <span class="skill-tag">NumPy</span>
+        <span class="skill-tag">Flask</span>
+        <span class="skill-tag">Flutter</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-title">Web Development</div>
+      <div class="skill-tags">
+        <span class="skill-tag">HTML</span>
+        <span class="skill-tag">CSS</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">REST APIs</span>
+        <span class="skill-tag">Authentication</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-title">Databases</div>
+      <div class="skill-tags">
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">SQLite</span>
+        <span class="skill-tag">MongoDB</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-title">Tools & Concepts</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">GitHub</span>
+        <span class="skill-tag">VS Code</span>
+        <span class="skill-tag">Data Preprocessing</span>
+        <span class="skill-tag">Model Evaluation</span>
+        <span class="skill-tag">Data Visualization</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="section-label">// projects</div>
+  <div class="section-title">What I've Built</div>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-num">01 / AI · NLP</div>
+      <div class="project-title">Intelligent Document Classification System</div>
+      <div class="project-desc">
+        An AI-based web application that automatically categorizes textual documents using NLP techniques. Implemented text preprocessing, tokenization, and a Support Vector Machine (SVM) model for accurate classification into predefined categories.
+      </div>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">NLP</span>
+        <span class="project-tag">SVM</span>
+        <span class="project-tag">Machine Learning</span>
+      </div>
+      <div style="margin-top:16px;">
+        <a href="document-classifier.html" style="
+          display: inline-block;
+          font-size: 13px;
+          padding: 8px 20px;
+          border-radius: 8px;
+          background: var(--accent);
+          color: var(--bg);
+          text-decoration: none;
+          font-weight: 600;
+          letter-spacing: 0.03em;
+        ">View Project →</a>
+      </div>
+</div>
+
+    <div class="project-card">
+      <div class="project-num">02 / ML · Web App</div>
+      <div class="project-title">SleepShield — Sleep Risk Prediction App</div>
+      <div class="project-desc">
+        A full-stack machine learning web application that analyzes sleep patterns and predicts risk levels. Built with Python Flask backend, MySQL database, and a responsive HTML/CSS/JavaScript frontend using the Random Forest algorithm.
+      </div>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">Flask</span>
+        <span class="project-tag">Random Forest</span>
+        <span class="project-tag">MySQL</span>
+        <span class="project-tag">JavaScript</span>
+      </div>
+      <div style="margin-top:16px;">
+        <a href="sleepshield.html" style="
+          display: inline-block;
+          font-size: 13px;
+          padding: 8px 20px;
+          border-radius: 8px;
+          background: var(--accent);
+          color: var(--bg);
+          text-decoration: none;
+          font-weight: 600;
+          letter-spacing: 0.03em;
+        ">View Project →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">03 / Mobile App</div>
+      <div class="project-title">SkillUp — Educational Mobile Application</div>
+      <div class="project-desc">
+        A cross-platform educational mobile application built with Flutter and Dart, providing centralized access to study materials, quizzes, PDFs, and video resources. Designed for improved learning accessibility and user engagement.
+      </div>
+      <div class="project-tags">
+        <span class="project-tag">Flutter</span>
+        <span class="project-tag">Dart</span>
+        <span class="project-tag">Mobile Dev</span>
+        <span class="project-tag">UI/UX</span>
+      </div>
+    <div style="margin-top:16px;">
+        <a href="skillup.html" style="
+          display: inline-block;
+          font-size: 13px;
+          padding: 8px 20px;
+          border-radius: 8px;
+          background: var(--accent);
+          color: var(--bg);
+          text-decoration: none;
+          font-weight: 600;
+          letter-spacing: 0.03em;
+        ">View Project →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">// education</div>
+  <div class="section-title">Academic Background</div>
+  <div class="edu-list">
+
+    <div class="edu-card">
+      <div class="edu-year">2024 — 2026</div>
+      <div class="edu-body">
+        <div class="edu-degree">Master of Computer Applications (MCA)</div>
+        <div class="edu-school">APJ Abdul Kalam Technological University · Chengannur, Alappuzha</div>
+        <div class="edu-grade">88.8% — Current</div>
+      </div>
+    </div>
+
+    <div class="edu-card">
+      <div class="edu-year">2021 — 2024</div>
+      <div class="edu-body">
+        <div class="edu-degree">Bachelor of Computer Applications (BCA)</div>
+        <div class="edu-school">Kannur University · Cherupuzha, Kannur</div>
+        <div class="edu-grade">84.02%</div>
+      </div>
+    </div>
+
+    <div class="edu-card">
+      <div class="edu-year">2019 — 2021</div>
+      <div class="edu-body">
+        <div class="edu-degree">Higher Secondary — Computer Science</div>
+        <div class="edu-school">St. Joseph's Higher Secondary School · Vayattuparamba, Kannur</div>
+        <div class="edu-grade">85%</div>
+      </div>
+    </div>
+
+  </div>
+
+ <style>
+  /* CERTIFICATIONS */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .cert-card {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 18px 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 0.2s;
+  }
+
+  .cert-card:hover { border-color: rgba(245,158,11,0.3); }
+
+  .cert-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+
+  .cert-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.4;
+  }
+
+  .cert-provider {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+
+  .cert-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid rgba(245,158,11,0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+
+  .cert-link:hover {
+    background: rgba(245,158,11,0.1);
+    border-color: var(--accent);
+  }
+
+  .cert-link.disabled {
+    color: var(--text3);
+    border-color: var(--border);
+    pointer-events: none;
+    opacity: 0.6;
+  }
+</style>
+
+<style>
+  /* CERTIFICATIONS */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .cert-grid { grid-template-columns: 1fr; }
+  }
+
+  .cert-card {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 18px 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 0.2s;
+  }
+
+  .cert-card:hover { border-color: rgba(245,158,11,0.3); }
+
+  .cert-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+
+  .cert-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.4;
+  }
+
+  .cert-provider {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+
+  .cert-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid rgba(245,158,11,0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+
+  .cert-link:hover {
+    background: rgba(245,158,11,0.1);
+    border-color: var(--accent);
+  }
+
+  .cert-link.disabled {
+    color: var(--text3);
+    border-color: var(--border);
+    pointer-events: none;
+    opacity: 0.6;
+  }
+</style>
+
+<!-- Certifications -->
+<section id="certifications">
+  <div class="section-label">// certifications</div>
+  <div class="section-title">Certifications & Participation</div>
+  <div class="cert-grid">
+
+  <div class="cert-card">
+    <div class="cert-icon">📜</div>
+    <div>
+      <div class="cert-name">Programming in C</div>
+      <div class="cert-provider">NPTEL Certification</div>
+      <a href="certs/nptel-c-programming.pdf" target="_blank" class="cert-link">View Certificate →</a>
+    </div>
+  </div>
+
+  <div class="cert-card">
+    <div class="cert-icon">🧠</div>
+    <div>
+      <div class="cert-name">AI in Sustainable Business Practices</div>
+      <div class="cert-provider">National Seminar · Navajyothi College</div>
+      <a href="certs/ai-sustainable-business.pdf" target="_blank" class="cert-link">View Certificate →</a>
+    </div>
+  </div>
+
+  <div class="cert-card">
+    <div class="cert-icon">📡</div>
+    <div>
+      <div class="cert-name">Internet of Things (IoT) — Technical Seminar</div>
+      <div class="cert-provider">Fog-Cloud Computing · Real-time Data Processing</div>
+      <a href="certs/iot-technical-seminar.pdf" target="_blank" class="cert-link">View Certificate →</a>
+    </div>
+  </div>
+
+  <div class="cert-card">
+    <div class="cert-icon">🤝</div>
+    <div>
+      <div class="cert-name">NSS Active Volunteer</div>
+      <div class="cert-provider">Community Service · Higher Secondary & BCA</div>
+      <a href="certs/nss-volunteer.pdf" target="_blank" class="cert-link">View Certificate →</a>
+    </div>
+  </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-label">// contact</div>
+  <div class="section-title">Get In Touch</div>
+  <div class="contact-grid">
+    <div>
+      <p class="contact-text">
+        I am actively looking for entry-level opportunities in AI/ML Engineering, Python Development, and Software Engineering roles across India and remote positions. Feel free to reach out!
+      </p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:shahanasma17@gmail.com">
+          <div class="contact-link-icon cl-em">✉</div>
+          <div>
+            <div class="contact-link-label">Email</div>
+            <div class="contact-link-val">shahanasma17@gmail.com</div>
+          </div>
+        </a>
+        <a class="contact-link" href="https://linkedin.com/in/shahanas-ma" target="_blank">
+          <div class="contact-link-icon cl-li">in</div>
+          <div>
+            <div class="contact-link-label">LinkedIn</div>
+            <div class="contact-link-val">linkedin.com/in/shahanas-ma</div>
+          </div>
+        </a>
+        <a class="contact-link" href="https://github.com/ShahanasMA" target="_blank">
+          <div class="contact-link-icon cl-gh">⌥</div>
+          <div>
+            <div class="contact-link-label">GitHub</div>
+            <div class="contact-link-val">github.com/ShahanasMA</div>
+          </div>
+        <a class="contact-link" href="https://wa.me/916235740182" target="_blank">
+  <div class="contact-link-icon">💬</div>
+  <div>
+    <div class="contact-link-label">WhatsApp</div>
+    <div class="contact-link-val">Chat on WhatsApp</div>
+  </div>
+</a>
+      </div>
+    </div>
+    <div class="contact-right">
+      <h3>Currently Available</h3>
+      <p>Open to full-time roles, internships, and freelance projects in AI/ML and software development.</p>
+      <div class="availability">
+        <div class="avail-dot"></div>
+        Available for opportunities · India &amp; Remote
+      </div>
+      <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border);">
+        <div style="font-size:12px;color:var(--text3);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.1em;">Preferred Roles</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="skill-tag">AI/ML Engineer</span>
+          <span class="skill-tag">Python Developer</span>
+          <span class="skill-tag">Web Developer</span>
+          <span class="skill-tag">Software Engineer</span>
+          <span class="skill-tag">NLP </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <span>Shahanas M A</span> · Built with passion from Kerala 🇮🇳</p>
+  <p>shahanasma17@gmail.com</p>
+</footer>
+
+</body>
+</html>

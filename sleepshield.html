@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SleepShield — Sleep Risk & Disorder Prediction | Shahanas M A</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #faf7f2;
+    --bg2: #f3ede4;
+    --bg3: #ede5d8;
+    --accent: #b45309;
+    --accent2: #92400e;
+    --text: #1c1410;
+    --text2: #5c4a35;
+    --text3: #9c836a;
+    --border: rgba(180,83,9,0.12);
+    --card: rgba(180,83,9,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(250,247,242,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 6%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    color: var(--accent);
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    color: var(--text2);
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 6% 60px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #faf7f2 0%, #f3ede4 100%);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+  radial-gradient(ellipse 50% 50% at 80% 50%, rgba(180,83,9,0.06) 0%, transparent 70%),
+  radial-gradient(ellipse 30% 40% at 10% 60%, rgba(146,64,14,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+  .project-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.25);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text2);
+    margin-bottom: 24px;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 680px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .meta-val {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* SECTIONS */
+  section { padding: 80px 6%; }
+
+  .section-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 40px;
+    color: var(--text);
+  }
+
+  /* OVERVIEW */
+  .overview { background: var(--bg2); }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .overview-text {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.9;
+  }
+
+  .overview-text p { margin-bottom: 16px; }
+  .overview-text strong { color: var(--text); }
+
+  .info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .info-card {
+    padding: 14px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .info-card-icon { font-size: 18px; flex-shrink: 0; }
+
+  .info-card-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+
+  .info-card-val {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  /* SCREENSHOTS */
+  .screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .screenshot-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .screenshot-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(245,158,11,0.3);
+  }
+
+  .screenshot-img {
+    width: 100%;
+    background: var(--bg3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .screenshot-img img {
+    display: block;
+  }
+
+  .screenshot-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .screenshot-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text3);
+    font-size: 12px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .screenshot-placeholder span {
+    font-size: 28px;
+  }
+
+  .screenshot-info {
+    padding: 14px 16px;
+  }
+
+  .screenshot-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .screenshot-desc {
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+
+  /* FEATURES */
+  .features { background: var(--bg2); }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+  }
+
+  .feature-card {
+    padding: 22px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: border-color 0.2s;
+  }
+
+  .feature-card:hover { border-color: rgba(245,158,11,0.3); }
+
+  .feature-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .feature-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* TECH STACK */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .tech-card {
+    padding: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .tech-category {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .tech-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.15);
+    color: var(--text2);
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* ARCHITECTURE */
+  .arch { background: var(--bg2); }
+
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .arch-step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 120px;
+  }
+
+  .arch-step-icon { font-size: 22px; margin-bottom: 6px; }
+  .arch-step-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .arch-step-detail {
+    font-size: 10px;
+    color: var(--text3);
+    font-family: 'Fira Code', monospace;
+  }
+
+  .arch-arrow {
+    color: var(--accent);
+    font-size: 18px;
+    padding: 0 8px;
+    font-weight: 300;
+  }
+
+  /* EVAL METRICS */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .metric-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .metric-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .metric-label {
+    font-size: 12px;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* TESTING RESULTS */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+  }
+
+  .result-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(245,158,11,0.08);
+    font-size: 12px;
+  }
+
+  .result-item:last-child { border-bottom: none; }
+
+  .result-name { color: var(--text2); }
+
+  .result-pass {
+    color: #166534;
+    font-weight: 600;
+    font-size: 11px;
+    background: rgba(22,101,52,0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  /* FOOTER NAV */
+  .page-footer {
+    padding: 40px 6%;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--text2);
+    transition: color 0.2s;
+  }
+  .footer-back:hover { color: var(--accent); }
+
+  .next-project {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--text2);
+    transition: color 0.2s;
+  }
+  .next-project:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .overview-grid { grid-template-columns: 1fr; }
+    .screenshots-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: 1fr; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .arch-flow { flex-direction: column; }
+    .arch-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">shahanas.dev / projects</div>
+  <a href="portfolio.html" class="back-btn">← Back </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="project-tag">😴 MCA Mini Project · 2025</div>
+    <h1>SleepShield — <span>Sleep Risk & Disorder</span><br>Prediction System</h1>
+    <div class="hero-sub">Using Machine Learning · Random Forest · Flask · MySQL</div>
+    <p class="hero-desc">
+      An intelligent web-based system that predicts sleep risk levels and potential sleep disorders from daily behavioral data. Users log sleep duration, interruptions, tiredness, and screen time — a Random Forest model classifies risk level while rule-based logic flags possible disorders like Insomnia, Hypersomnia, and Sleep Apnea.
+    </p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="meta-label">University</div>
+        <div class="meta-val">APJ Abdul Kalam Technological University</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Degree</div>
+        <div class="meta-val">Master of Computer Applications</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Year</div>
+        <div class="meta-val">October 2025</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Role</div>
+        <div class="meta-val">Solo Developer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="overview" id="overview">
+  <div class="section-label">// project overview</div>
+  <div class="section-title">What & Why</div>
+  <div class="overview-grid">
+    <div class="overview-text">
+      <p>Sleep is fundamental to health, emotional balance, and cognitive performance — yet <strong>many sleep-related disorders like Insomnia, Hypersomnia, and Sleep Apnea go undiagnosed</strong> due to the cost and inconvenience of clinical sleep studies and wearable-dependent tracking apps.</p>
+      <p>SleepShield bridges this gap with a <strong>lightweight, hardware-free web application</strong> that evaluates behavioral and lifestyle factors — sleep duration, tiredness level, screen time, and interruptions — to assess sleep health without needing any special equipment.</p>
+      <p>A <strong>Random Forest Classifier</strong> predicts the user's sleep risk as Low, Moderate, or High, while a <strong>rule-based analytical engine</strong> analyzes trends across recent logs to flag possible disorder tendencies once enough data is collected.</p>
+      <p>Beyond prediction, the platform includes <strong>trend visualization</strong> and a dedicated <strong>awareness section</strong>, turning SleepShield into a preventive and educational tool rather than just a tracker.</p>
+    </div>
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-card-icon">🎯</div>
+        <div>
+          <div class="info-card-label">Problem Solved</div>
+          <div class="info-card-val">Accessible, hardware-free prediction of sleep risk and early disorder indicators from daily behavior</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⚙️</div>
+        <div>
+          <div class="info-card-label">ML Algorithm</div>
+          <div class="info-card-val">Random Forest Classifier (Scikit-learn) + rule-based disorder logic</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📋</div>
+        <div>
+          <div class="info-card-label">Input Features</div>
+          <div class="info-card-val">Sleep duration, interruptions, tiredness level (1–10), screen time</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⚡</div>
+        <div>
+          <div class="info-card-label">Processing Speed</div>
+          <div class="info-card-val">Real-time risk prediction within 1–2 seconds</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🔒</div>
+        <div>
+          <div class="info-card-label">Security</div>
+          <div class="info-card-val">Encrypted password storage with Flask-Login session management</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOTS -->
+<section id="screenshots">
+  <div class="section-label">// screenshots</div>
+  <div class="section-title">Project Screenshots</div>
+  <div class="screenshots-grid">
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/sleepshield-login.png" alt="Login Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>🔐</span>
+          Add sleepshield-login.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Login Page</div>
+        <div class="screenshot-desc">Secure login and registration for personalized sleep tracking</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/sleepshield-home.png" alt="Home Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>🏠</span>
+          Add sleepshield-home.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Home Page</div>
+        <div class="screenshot-desc">Central dashboard linking logs, predictions, trends, and awareness</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/sleepshield-addlog.png" alt="Add Sleep Log Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>➕</span>
+          Add sleepshield-addlog.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Add Sleep Log Page</div>
+        <div class="screenshot-desc">Daily entry form with instant predicted risk level on save</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/sleepshield-logs.png" alt="Past Sleep Logs Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>📋</span>
+          Add sleepshield-logs.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Past Sleep Logs Page</div>
+        <div class="screenshot-desc">Historical table of logs with sleep hours, interruptions, and risk level</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/sleepshield-disorder.png" alt="Disorder Prediction Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>🩺</span>
+          Add sleepshield-disorder.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Disorder Prediction Page</div>
+        <div class="screenshot-desc">Rule-based disorder detection from recent log averages</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/sleepshield-trends.png" alt="Sleep Trends Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>📊</span>
+          Add sleepshield-trends.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Sleep Trends Page</div>
+        <div class="screenshot-desc">Visualizes sleep hours, interruptions, and tiredness over time</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/sleepshield-awareness.png" alt="Sleep Awareness Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>💡</span>
+          Add sleepshield-awareness.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Sleep Awareness Page</div>
+        <div class="screenshot-desc">Educational content on Insomnia, Hypersomnia, and Sleep Apnea prevention</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-label">// key features</div>
+  <div class="section-title">What It Does</div>
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Sleep Risk Prediction</div>
+      <div class="feature-desc">Random Forest model classifies each log into Low, Moderate, or High sleep risk based on behavioral features.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Disorder Detection</div>
+      <div class="feature-desc">Rule-based logic flags possible Insomnia, Hypersomnia, or Sleep Apnea from average values across recent logs.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Trend Visualization</div>
+      <div class="feature-desc">Interactive graphs plot sleep duration, interruptions, and tiredness over time to reveal patterns.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Daily Sleep Logging</div>
+      <div class="feature-desc">Simple form to record sleep duration, interruptions, tiredness level, and screen time each day.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Sleep Awareness Section</div>
+      <div class="feature-desc">Standalone educational content on causes, symptoms, and prevention for common sleep disorders.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Secure Authentication</div>
+      <div class="feature-desc">Encrypted login and registration with session management via Flask-Login and bcrypt.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Log History</div>
+      <div class="feature-desc">Users can view, review, and track all previously submitted sleep logs and predictions.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Real-time Results</div>
+      <div class="feature-desc">Risk predictions are returned within 1–2 seconds of submitting a new sleep log.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">MySQL-backed Storage</div>
+      <div class="feature-desc">All user credentials, logs, and predictions are securely stored and managed in MySQL.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="tech">
+  <div class="section-label">// technology stack</div>
+  <div class="section-title">Built With</div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-category"> Backend</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Python 3.9+</span>
+        <span class="tech-tag">Flask</span>
+        <span class="tech-tag">Flask-Login</span>
+        <span class="tech-tag">bcrypt</span>
+        <span class="tech-tag">Joblib</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Machine Learning</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Scikit-learn</span>
+        <span class="tech-tag">Random Forest</span>
+        <span class="tech-tag">Pandas</span>
+        <span class="tech-tag">NumPy</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Visualization</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Matplotlib</span>
+        <span class="tech-tag">Seaborn</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Frontend</div>
+      <div class="tech-tags">
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Database</div>
+      <div class="tech-tags">
+        <span class="tech-tag">MySQL</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category">Logic Layer</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Rule-Based Disorder Detection</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="arch" id="architecture">
+  <div class="section-label">// system architecture</div>
+  <div class="section-title">How It Works</div>
+
+  <div class="arch-flow">
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">User Input</div>
+      <div class="arch-step-detail">Duration · Interruptions</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Preprocessing</div>
+      <div class="arch-step-detail">Clean & Validate</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Random Forest</div>
+      <div class="arch-step-detail">Risk Prediction</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">MySQL Storage</div>
+      <div class="arch-step-detail">Logs + Risk Level</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Rule-Based Logic</div>
+      <div class="arch-step-detail">If Logs ≥ 3 Days</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Results</div>
+      <div class="arch-step-detail">Risk + Disorder</div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;text-align:center;font-size:13px;color:var(--text3);">
+    Fewer than 3 logs → 🔁 Continue Logging → Disorder detection unlocks once 3+ daily logs are recorded
+  </div>
+</section>
+
+<!-- EVALUATION METRICS -->
+<section id="metrics">
+  <div class="section-label">// model evaluation</div>
+  <div class="section-title">Random Forest Performance</div>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-value">93%</div>
+      <div class="metric-label">Accuracy</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">95%</div>
+      <div class="metric-label">Precision</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">93%</div>
+      <div class="metric-label">Recall</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">93%</div>
+      <div class="metric-label">F1-Score</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTING RESULTS -->
+<section class="arch" id="results">
+  <div class="section-label">// testing & results</div>
+  <div class="section-title">All Tests Passed </div>
+  <div class="results-grid">
+
+    <div class="result-card">
+      <div class="result-title">Unit Testing</div>
+      <div class="result-item"><span class="result-name">Sleep Log Preprocessing</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Random Forest Prediction</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Rule-Based Disorder Detection</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Trend Graph Generation</span><span class="result-pass">PASS</span></div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-title">Integration Testing</div>
+      <div class="result-item"><span class="result-name">Input → Model</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Model → Output</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Input → Rule-Based Logic</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Awareness Page Link</span><span class="result-pass">PASS</span></div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-title">Performance Testing</div>
+      <div class="result-item"><span class="result-name">Real-Time Prediction</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Trend Graph Generation</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">UI Responsiveness</span><span class="result-pass">PASS</span></div>
+      <div class="result-item"><span class="result-name">Accuracy Under Load</span><span class="result-pass">PASS</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="page-footer">
+  <a href="portfolio.html" class="footer-back">← Back</a>
+  <a href="skillup.html" class="next-project">Next Project: SkillUp →</a>
+</div>
+
+
+</body>
+</html>

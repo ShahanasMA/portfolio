@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillUp — Multi-Stream Learning App | Shahanas M A</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #faf7f2;
+    --bg2: #f3ede4;
+    --bg3: #ede5d8;
+    --accent: #b45309;
+    --accent2: #92400e;
+    --text: #1c1410;
+    --text2: #5c4a35;
+    --text3: #9c836a;
+    --border: rgba(180,83,9,0.12);
+    --card: rgba(180,83,9,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(250,247,242,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 6%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    color: var(--accent);
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    color: var(--text2);
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 6% 60px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #faf7f2 0%, #f3ede4 100%);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+  radial-gradient(ellipse 50% 50% at 80% 50%, rgba(180,83,9,0.06) 0%, transparent 70%),
+  radial-gradient(ellipse 30% 40% at 10% 60%, rgba(146,64,14,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+  .project-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.25);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text2);
+    margin-bottom: 24px;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 680px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .meta-val {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* SECTIONS */
+  section { padding: 80px 6%; }
+
+  .section-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 40px;
+    color: var(--text);
+  }
+
+  /* OVERVIEW */
+  .overview { background: var(--bg2); }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .overview-text {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.9;
+  }
+
+  .overview-text p { margin-bottom: 16px; }
+  .overview-text strong { color: var(--text); }
+
+  .info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .info-card {
+    padding: 14px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .info-card-icon { font-size: 18px; flex-shrink: 0; }
+
+  .info-card-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+
+  .info-card-val {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  /* SCREENSHOTS */
+  .screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .screenshot-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .screenshot-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(245,158,11,0.3);
+  }
+
+  .screenshot-img {
+    width: 100%;
+    background: var(--bg3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .screenshot-img img {
+    width: 100%;
+    display: block;
+  }
+
+  .screenshot-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text3);
+    font-size: 12px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .screenshot-placeholder span {
+    font-size: 28px;
+  }
+
+  .screenshot-info {
+    padding: 14px 16px;
+  }
+
+  .screenshot-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .screenshot-desc {
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+
+  /* FEATURES */
+  .features { background: var(--bg2); }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+  }
+
+  .feature-card {
+    padding: 22px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: border-color 0.2s;
+  }
+
+  .feature-card:hover { border-color: rgba(245,158,11,0.3); }
+
+  .feature-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .feature-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* TECH STACK */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .tech-card {
+    padding: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .tech-category {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .tech-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.15);
+    color: var(--text2);
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* ARCHITECTURE */
+  .arch { background: var(--bg2); }
+
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .arch-step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 120px;
+  }
+
+  .arch-step-icon { font-size: 22px; margin-bottom: 6px; }
+  .arch-step-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .arch-step-detail {
+    font-size: 10px;
+    color: var(--text3);
+    font-family: 'Fira Code', monospace;
+  }
+
+  .arch-arrow {
+    color: var(--accent);
+    font-size: 18px;
+    padding: 0 8px;
+    font-weight: 300;
+  }
+
+  /* TESTING RESULTS */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+  }
+
+  .result-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(245,158,11,0.08);
+    font-size: 12px;
+  }
+
+  .result-item:last-child { border-bottom: none; }
+
+  .result-name { color: var(--text2); line-height: 1.6; }
+
+  .result-pass {
+    color: #166534;
+    font-weight: 600;
+    font-size: 11px;
+    background: rgba(22,101,52,0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* FOOTER NAV */
+  .page-footer {
+    padding: 40px 6%;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--text2);
+    transition: color 0.2s;
+  }
+  .footer-back:hover { color: var(--accent); }
+
+  .next-project {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--text2);
+    transition: color 0.2s;
+  }
+  .next-project:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .overview-grid { grid-template-columns: 1fr; }
+    .screenshots-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: 1fr; }
+    .arch-flow { flex-direction: column; }
+    .arch-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">shahanas.dev / projects</div>
+  <a href="portfolio.html" class="back-btn">← Back </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="project-tag">📱 BCA Final Year Project · 2023–2024</div>
+    <h1>SkillUp — <span>Multi-Stream</span><br>Learning App</h1>
+    <div class="hero-sub">Using Flutter · Firebase · Cross-Platform Mobile</div>
+    <p class="hero-desc">
+      A cross-platform mobile learning app that brings IT, Music, Business, and other subjects together on a single free platform. Learners work through interactive modules, video lectures, study notes, and quizzes at their own pace, while admins manage users and course content from a dedicated dashboard.
+    </p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="meta-label">University</div>
+        <div class="meta-val">Kannur University</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Degree</div>
+        <div class="meta-val">Bachelor of Computer Application (BCA)</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Year</div>
+        <div class="meta-val">2023–2024</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Role</div>
+        <div class="meta-val">Team Project (3 Members)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="overview" id="overview">
+  <div class="section-label">// project overview</div>
+  <div class="section-title">What & Why</div>
+  <div class="overview-grid">
+    <div class="overview-text">
+      <p>Most learning platforms lock courses to a single stream, charge for the bulk of their content, and rarely push updates — leaving learners juggling several apps just to explore different interests. <strong>SkillUp was built to close that gap</strong> with one free, unified space for learning.</p>
+      <p>The app hosts a diverse range of courses across <strong>IT, Music, Business, and more</strong>, each broken into modules with video lectures, downloadable study notes, and quizzes that reinforce what was just covered.</p>
+      <p>Two roles drive the platform: <strong>Users</strong>, who browse, learn, and track their own progress, and an <strong>Administrator</strong>, who manages active users and uploads or removes course content — study notes, videos, and question papers — keeping the catalog current.</p>
+      <p>Built with <strong>Flutter</strong> for a single, cross-platform codebase and backed by <strong>Firebase</strong> for authentication, storage, and data, SkillUp aims to make learning feel like one continuous, self-paced journey rather than a series of disconnected apps.</p>
+    </div>
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-card-icon">🎯</div>
+        <div>
+          <div class="info-card-label">Problem Solved</div>
+          <div class="info-card-val">Free, unified access to multi-stream courses (IT, Music, Business) in one regularly-updated app</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">👥</div>
+        <div>
+          <div class="info-card-label">Core Modules</div>
+          <div class="info-card-val">Administrator and User, each with a dedicated set of use cases</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📚</div>
+        <div>
+          <div class="info-card-label">Learning Content</div>
+          <div class="info-card-val">Course modules, video lectures, downloadable study notes, and quizzes</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📈</div>
+        <div>
+          <div class="info-card-label">Progress Tracking</div>
+          <div class="info-card-val">Per-course progress and status visible to each learner in real time</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🔒</div>
+        <div>
+          <div class="info-card-label">Security</div>
+          <div class="info-card-val">Firebase-backed authentication with mandatory field validation on all forms</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOTS -->
+<section id="screenshots">
+  <div class="section-label">// screenshots</div>
+  <div class="section-title">Project Screenshots</div>
+  <div class="screenshots-grid">
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/skillup-login.png" alt="Login Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>🔐</span>
+          Add skillup-login.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Login Page</div>
+        <div class="screenshot-desc">App splash screen leads into a simple email and password login, with a direct link to register for users who are new to SkillUp.</div>
+      </div>
+    </div>
+
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/home.png" alt="Home Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>🏠</span>
+          Add skillup-home.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Home Page</div>
+        <div class="screenshot-desc">Landing screen with subject categories — Computer, Business, Music, Art, and more — plus a trending courses carousel to surface popular picks.</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/skillup-category.png" alt="Course Category Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>📂</span>
+          Add skillup-category.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Course Category Page</div>
+        <div class="screenshot-desc">Browsing within a category like Computer shows every available course with a short description and a one-tap link into the course.</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/skillup-course-detail.png" alt="Course Detail & Modules Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>📖</span>
+          Add skillup-course-detail.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Course Detail & Modules</div>
+        <div class="screenshot-desc">Each course page lists what learners will gain and the target audience, then expands into a module-by-module index of chapters to work through.</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/skillup-quiz.png" alt="Lesson & Quiz Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>❓</span>
+          Add skillup-quiz.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Lesson & Quiz Flow</div>
+        <div class="screenshot-desc">Story-style lesson screens walk learners through each concept, followed by a summary quiz with instant right/wrong feedback before unlocking the next module.</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/skillup-progress.png" alt="Progress & Materials Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>📊</span>
+          Add skillup-progress.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Materials</div>
+        <div class="screenshot-desc">Tracks completion percentage per course and gives quick access to downloadable videos, study notes, and practice questions for the active course.</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/skillup-admin.png" alt="Profile Page"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>👤</span>
+          Add skillup-profile.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Profile Page</div>
+        <div class="screenshot-desc">Shows the learner's name and email alongside settings, invite friends, rating, help, and a dark mode toggle for the whole app.</div>
+      </div>
+    </div>
+
+    <div class="screenshot-card">
+      <div class="screenshot-img">
+        <img src="images/skillup-profile.png" alt="Admin Dashboard"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="screenshot-placeholder" style="display:none">
+          <span>⚙️</span>
+          Add skillup-admin.png to images/ folder
+        </div>
+      </div>
+      <div class="screenshot-info">
+        <div class="screenshot-title">Admin Dashboard</div>
+        <div class="screenshot-desc">A central panel for managing active users, videos, question papers, and study notes, plus an upload flow with live progress for adding new question papers.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-label">// key features</div>
+  <div class="section-title">What It Does</div>
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Multi-Stream Courses</div>
+      <div class="feature-desc">Free courses across IT, Music, Business, and more, all accessible from a single home screen.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Modular Learning</div>
+      <div class="feature-desc">Each course is broken into modules and chapters so learners can progress step by step at their own pace.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Video Lectures</div>
+      <div class="feature-desc">Course-specific videos let learners study concepts visually alongside written material.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Downloadable Study Notes</div>
+      <div class="feature-desc">PDF study notes and question papers can be downloaded straight from the course page for offline access.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Interactive Quizzes</div>
+      <div class="feature-desc">Quizzes at the end of each module check understanding with instant right/wrong feedback.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Progress Tracking</div>
+      <div class="feature-desc">Users can see how far they've progressed through each course and pick up right where they left off.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Trending Courses</div>
+      <div class="feature-desc">The home page surfaces popular courses, helping learners discover new subjects worth exploring.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Admin Content Management</div>
+      <div class="feature-desc">Admins can add or remove study notes, videos, and question papers, and monitor or remove active users.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <div class="feature-title">Dark Mode & Settings</div>
+      <div class="feature-desc">A dedicated profile section offers dark mode, help, and app settings for a personalized experience.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="tech">
+  <div class="section-label">// technology stack</div>
+  <div class="section-title">Built With</div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-category"> Frontend</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Flutter</span>
+        <span class="tech-tag">Dart</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Backend</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Google Firebase</span>
+        <span class="tech-tag">Firebase Storage</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Platforms</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Android</span>
+        <span class="tech-tag">iOS</span>
+        <span class="tech-tag">Web</span>
+        <span class="tech-tag">Windows</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Development</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Windows 10</span>
+        <span class="tech-tag">Single Codebase</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-category"> Data & Files</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Course Materials</span>
+        <span class="tech-tag">User Records</span>
+        <span class="tech-tag">Progress Data</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="arch" id="architecture">
+  <div class="section-label">// system architecture</div>
+  <div class="section-title">How It Works</div>
+
+  <div class="arch-flow">
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Login / Sign Up</div>
+      <div class="arch-step-detail">User or Admin</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Browse Categories</div>
+      <div class="arch-step-detail">IT · Music · Business</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Select Course</div>
+      <div class="arch-step-detail">Modules & Chapters</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Learn</div>
+      <div class="arch-step-detail">Video · Notes · Quiz</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Track Progress</div>
+      <div class="arch-step-detail">Course Status</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">
+      <div class="arch-step-icon"></div>
+      <div class="arch-step-name">Firebase</div>
+      <div class="arch-step-detail">Auth · Storage · Data</div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;text-align:center;font-size:13px;color:var(--text3);">
+    Admin side → 👥 Manage Users → 📤 Upload/Remove Notes, Videos & Question Papers → 🔄 Content Reflects Instantly for Users
+  </div>
+</section>
+
+<!-- TESTING -->
+<section id="results">
+  <div class="section-label">// testing & implementation</div>
+  <div class="section-title">Testing Approach</div>
+  <div class="results-grid">
+
+    <div class="result-card">
+      <div class="result-title">Testing Methodologies</div>
+      <div class="result-item"><span class="result-name">Unit Testing — each module verified individually for correct behavior</span><span class="result-pass">DONE</span></div>
+      <div class="result-item"><span class="result-name">Integration Testing — top-down and bottom-up assembly of tested modules</span><span class="result-pass">DONE</span></div>
+      <div class="result-item"><span class="result-name">Validation Testing — black-box checks against functional requirements</span><span class="result-pass">DONE</span></div>
+      <div class="result-item"><span class="result-name">Output Testing — on-screen and printed output formats confirmed with users</span><span class="result-pass">DONE</span></div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-title">User Acceptance</div>
+      <div class="result-item"><span class="result-name">Alpha Testing — guided walkthrough with the developer observing feedback</span><span class="result-pass">DONE</span></div>
+      <div class="result-item"><span class="result-name">Beta Testing — released to end users, issues logged and resolved</span><span class="result-pass">DONE</span></div>
+      <div class="result-item"><span class="result-name">Security Validation — mandatory field checks on every input form</span><span class="result-pass">DONE</span></div>
+      <div class="result-item"><span class="result-name">Real Data Testing — system tested with real data with satisfactory results</span><span class="result-pass">DONE</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="page-footer">
+  <a href="portfolio.html" class="footer-back">← Back</a>
+</div>
+
+</body>
+</html>
